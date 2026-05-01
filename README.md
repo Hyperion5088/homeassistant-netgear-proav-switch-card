@@ -1,0 +1,83 @@
+# NETGEAR Pro AV Switch Card
+
+Local Lovelace card for the [`NETGEAR Pro AV Switch`](https://github.com/Hyperion5088/ha-netgear-proav) Home Assistant integration.
+
+## HACS Installation
+
+Add this repository to HACS as a Dashboard repository. This card expects entities from the companion [`ha-netgear-proav`](https://github.com/Hyperion5088/ha-netgear-proav) integration.
+
+HACS installs:
+
+```text
+/hacsfiles/netgear-proav-switch-card/netgear-proav-switch-card.js
+```
+
+The custom card type is:
+
+```yaml
+type: custom:netgear-proav-switch-card-v3
+```
+
+## Example
+
+Single switch:
+
+```yaml
+type: custom:netgear-proav-switch-card-v3
+name: Core Switch
+width: 100%
+```
+
+Multiple switches:
+
+```yaml
+type: custom:netgear-proav-switch-card-v3
+switches:
+  - name: Core Switch
+  - name: AV Switch
+  - name: Studio Switch
+width: 100%
+```
+
+The visual editor supports:
+
+- card title
+- adding switches by selecting one of the switch's link-state entities with Home Assistant's entity picker
+- single switch name
+- card width, such as `100%`, `720px`, or `48rem`
+- a switch list using one switch name per line
+- show/hide options for the switch faceplate/key, switch info, selected-port data, switch controls, and port controls
+- individual control toggles for protection lock, admin, bounce, PoE, PoE reset, pause polling, full poll, save config, and fan mode
+
+The card discovers entities from the Home Assistant device registry first, using the configured switch name to match the HA device and its entities. It then falls back to friendly/original entity names. `entity_prefix` is still supported only as a legacy fallback for existing card YAML.
+
+The card follows the Home Assistant custom-card editor pattern:
+
+- invalid configuration throws from `setConfig`, allowing Home Assistant to show a native error card
+- the card picker metadata includes a documentation URL
+- the visual editor dispatches `config-changed` events after edits
+- sections-view grid sizing is declared with `getGridOptions`
+
+When using the legacy prefix fallback, the card looks for:
+
+- `binary_sensor.<prefix>_link_state_*`
+- `sensor.<prefix>_poe_state_*`
+- `switch.<prefix>_admin_control_*`
+- `switch.<prefix>_poe_switch_*`
+- `button.<prefix>_admin_bounce_*`
+- `button.<prefix>_poe_reset_*`
+- `lock.<prefix>_port_config_protection_*`
+
+Ports are shown as grey when inactive, green when active, and blue when active with PoE being delivered. Hovering over a port shows the available port data. Selecting a port opens its detail and control area. If the switch faceplate is hidden, the selected-port heading becomes a dropdown selector instead.
+
+Known NETGEAR Pro AV models are rendered with model-aware physical port groups:
+
+- RJ45 and RJ45 PoE ports use square jack styling.
+- SFP, SFP+, and SFP28 ports use narrow cage styling.
+- QSFP+ and QSFP28 ports use wider cage styling.
+- Combo ports use a split outline.
+- Modular/chassis ports use dashed module-bay styling.
+
+The card includes layout metadata for M4250, M4300, M4350, and M4500 Pro AV models, keyed by both marketing model and SKU where known. Known models use their catalog layout and row width. Models with 16 or fewer ports are treated as single-row unless explicitly marked otherwise; larger models use odd/even two-row ordering unless the catalog provides a single-row override. Unknown models fall back to API/media-type detection and numeric ordering.
+
+LAG interfaces are not drawn as physical ports. They are shown in a separate logical LAG section below the front-panel layout, with member ports shown when Home Assistant exposes them.
