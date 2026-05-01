@@ -260,16 +260,15 @@ class NetgearProAvSwitchCard extends HTMLElement {
     if (Array.isArray(config.switches)) {
       return config.switches
         .map((item) => (typeof item === "string" ? { name: item } : item))
-        .filter((item) => item && (item.name || item.entity_prefix || item.device_id))
+        .filter((item) => item && (item.name || item.device_id))
         .map((item) => ({
           columns: config.columns || 12,
           ...item,
         }));
     }
-    if (config.name || config.entity_prefix || config.device_id) {
+    if (config.name || config.device_id) {
       return [
         {
-          entity_prefix: config.entity_prefix,
           name: config.name,
           device_id: config.device_id,
           columns: config.columns || 12,
@@ -287,15 +286,12 @@ class NetgearProAvSwitchCard extends HTMLElement {
   }
 
   switchKey(item) {
-    return item.device_id || item.name || item.entity_prefix;
+    return item.device_id || item.name;
   }
 
   switchSubtitle(item) {
     if (item.device_id) {
       return "device id";
-    }
-    if (item.entity_prefix) {
-      return "legacy prefix fallback";
     }
     return "device/name matched";
   }
@@ -398,16 +394,6 @@ class NetgearProAvSwitchCard extends HTMLElement {
       return deviceEntities;
     }
 
-    const prefix = activeSwitch.entity_prefix;
-    if (prefix) {
-      const prefixEntities = this.stateEntityIds()
-        .filter((entityId) => entityId.startsWith(`${domain}.${prefix}_`));
-      if (prefixEntities.length) {
-        this.renderCache?.entityCandidates?.set(cacheKey, prefixEntities);
-        return prefixEntities;
-      }
-    }
-
     const target = this.cleanName(activeSwitch.name || "");
     if (!target) {
       this.renderCache?.entityCandidates?.set(cacheKey, []);
@@ -440,7 +426,7 @@ class NetgearProAvSwitchCard extends HTMLElement {
           const selected = this.switchKey(item) === this.selectedSwitch ? " selected" : "";
           return `
             <button class="switch-option${selected}" data-switch="${this.escapeAttr(this.switchKey(item))}" role="tab">
-              <span>${this.escape(item.name || item.entity_prefix || item.device_id)}</span>
+              <span>${this.escape(item.name || item.device_id)}</span>
               <b>${this.escape(this.switchSubtitle(item))}</b>
             </button>
           `;
@@ -474,11 +460,6 @@ class NetgearProAvSwitchCard extends HTMLElement {
   }
 
   findSwitchEntity(activeSwitch, domain, suffix, includes = []) {
-    const prefix = activeSwitch.entity_prefix;
-    const direct = prefix && suffix ? `${domain}.${prefix}_${suffix}` : null;
-    if (direct && this._hass.states[direct]) {
-      return direct;
-    }
     return this.switchEntityCandidates(activeSwitch, domain).find((entityId) => {
       const state = this._hass.states[entityId];
       if (state?.attributes?.port) {
@@ -830,12 +811,6 @@ class NetgearProAvSwitchCard extends HTMLElement {
   }
 
   findEntity(activeSwitch, domain, name, label, suffix) {
-    const prefix = activeSwitch.entity_prefix;
-    const direct = prefix ? `${domain}.${prefix}_${name}_${suffix}` : "";
-    if (this._hass.states[direct]) {
-      return direct;
-    }
-
     const expected = this.cleanName(label);
     const expectedSuffix = this.cleanName(suffix);
     const expectedName = this.cleanName(name);
@@ -944,7 +919,7 @@ class NetgearProAvSwitchCard extends HTMLElement {
 
   renderEmpty() {
     const activeSwitch = this.currentSwitch();
-    return `<section class="details empty">No port entities found for ${this.escape(activeSwitch.name || activeSwitch.entity_prefix || activeSwitch.device_id)}.</section>`;
+    return `<section class="details empty">No port entities found for ${this.escape(activeSwitch.name || activeSwitch.device_id)}.</section>`;
   }
 
   dataRow(label, value) {
@@ -1163,7 +1138,7 @@ class NetgearProAvSwitchCard extends HTMLElement {
 
   switchName(ports) {
     const first = ports[0]?.linkState?.attributes?.friendly_name;
-    return first ? first.replace(/ Link State .*/, "") : this.currentSwitch().name || this.currentSwitch().entity_prefix;
+    return first ? first.replace(/ Link State .*/, "") : this.currentSwitch().name;
   }
 
   inferPortType(port) {
@@ -1959,7 +1934,7 @@ class NetgearProAvSwitchCardEditor extends HTMLElement {
         <label>
           Switches
           <textarea data-field="switches" placeholder="Core Switch">${this.escape(this.switchesText())}</textarea>
-          <span class="hint">One switch per line: switch name. Optional fallback format: name | entity_prefix | columns.</span>
+          <span class="hint">One switch per line: switch name. Add switches with the entity picker when possible.</span>
         </label>
         <div class="editor-section">
           <h3>Data</h3>
@@ -1998,7 +1973,7 @@ class NetgearProAvSwitchCardEditor extends HTMLElement {
       return "";
     }
     return this.config.switches
-      .map((item) => [item.name || "", item.device_id || item.entity_prefix || "", item.columns || ""].join(" | ").trim())
+      .map((item) => [item.name || "", item.device_id || "", item.columns || ""].join(" | ").trim())
       .map((line) => line.replace(/\s+\|\s+\|\s*$/, ""))
       .join("\n");
   }
@@ -2095,8 +2070,6 @@ class NetgearProAvSwitchCardEditor extends HTMLElement {
 
     if (singleSwitchName) {
       nextConfig.name = singleSwitchName;
-    } else {
-      delete nextConfig.entity_prefix;
     }
 
     if (width) {
@@ -2140,16 +2113,15 @@ class NetgearProAvSwitchCardEditor extends HTMLElement {
       .map((line) => line.trim())
       .filter(Boolean)
       .map((line) => {
-        const [name, entityPrefix, columns] = line.split("|").map((part) => part.trim());
-        const deviceId = entityPrefix && this._hass?.devices?.[entityPrefix] ? entityPrefix : undefined;
+        const [name, deviceIdValue, columns] = line.split("|").map((part) => part.trim());
+        const deviceId = deviceIdValue && this._hass?.devices?.[deviceIdValue] ? deviceIdValue : undefined;
         return {
           name,
           device_id: deviceId,
-          entity_prefix: deviceId ? undefined : entityPrefix || undefined,
           columns: Number.parseInt(columns, 10) || undefined,
         };
       })
-      .filter((item) => item.name || item.device_id || item.entity_prefix);
+      .filter((item) => item.name || item.device_id);
   }
 
   cleanName(value) {

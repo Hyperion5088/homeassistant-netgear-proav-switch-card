@@ -71,7 +71,7 @@ The visual editor supports:
 - show/hide options for the switch faceplate/key, switch info, selected-port data, switch controls, and port controls
 - individual control toggles for protection lock, admin, bounce, PoE, PoE reset, pause polling, full poll, save config, and fan mode
 
-The card discovers entities from the Home Assistant device registry first, using the configured switch name to match the HA device and its entities. It then falls back to friendly/original entity names. `entity_prefix` is still supported only as a legacy fallback for existing card YAML.
+The card discovers entities from the Home Assistant device registry first, using the configured switch name to match the HA device and its entities. It then falls back to friendly/original entity names for the selected switch.
 
 The card follows the Home Assistant custom-card editor pattern:
 
@@ -79,16 +79,6 @@ The card follows the Home Assistant custom-card editor pattern:
 - the card picker metadata includes a documentation URL
 - the visual editor dispatches `config-changed` events after edits
 - sections-view grid sizing is declared with `getGridOptions`
-
-When using the legacy prefix fallback, the card looks for:
-
-- `binary_sensor.<prefix>_link_state_*`
-- `sensor.<prefix>_poe_state_*`
-- `switch.<prefix>_admin_control_*`
-- `switch.<prefix>_poe_switch_*`
-- `button.<prefix>_admin_bounce_*`
-- `button.<prefix>_poe_reset_*`
-- `lock.<prefix>_port_config_protection_*`
 
 Ports are shown as grey when inactive, green when active, and blue when active with PoE being delivered. Hovering over a port shows the available port data. Selecting a port opens its detail and control area. If the switch faceplate is hidden, the selected-port heading becomes a dropdown selector instead.
 
