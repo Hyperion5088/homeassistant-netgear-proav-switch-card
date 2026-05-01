@@ -2181,5 +2181,6 @@ window.customCards.push({
   type: "netgear-proav-switch-card-v3",
   name: "NETGEAR Pro AV Switch Card",
   description: "Visual switch faceplate and per-port controls for multiple NETGEAR Pro AV switches.",
-  documentationURL: "https://developers.home-assistant.io/docs/frontend/custom-ui/custom-card",
+  preview: true,
+  documentationURL: "https://github.com/Hyperion5088/netgear-proav-switch-card",
 });

@@ -1,5 +1,7 @@
 # NETGEAR Pro AV Switch Card
 
+![NETGEAR Pro AV Switch Card logo](brand/logo.png)
+
 Local Lovelace card for the [`NETGEAR Pro AV Switch`](https://github.com/Hyperion5088/ha-netgear-proav) Home Assistant integration.
 
 ## HACS Installation
