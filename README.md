@@ -4,7 +4,7 @@
 
 Local Lovelace card for the [`NETGEAR Pro AV Switch`](https://github.com/Hyperion5088/homeassistant-netgear-proav) Home Assistant integration.
 
-This repository is the HACS dashboard/plugin card. The companion integration is [`ha-netgear-proav`](https://github.com/Hyperion5088/homeassistant-netgear-proav).
+This repository is the HACS dashboard/plugin card. The companion integration is [`homeassistant-netgear-proav`](https://github.com/Hyperion5088/homeassistant-netgear-proav).
 
 [![Add this repository to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Hyperion5088&repository=homeassistant-netgear-proav-switch-card&category=plugin)
 
@@ -12,7 +12,7 @@ This repository is the HACS dashboard/plugin card. The companion integration is 
 
 ### HACS
 
-1. Install the companion [`ha-netgear-proav`](https://github.com/Hyperion5088/homeassistant-netgear-proav) integration first.
+1. Install the companion [`homeassistant-netgear-proav`](https://github.com/Hyperion5088/homeassistant-netgear-proav) integration first.
 2. Use the button above, or add this repository to HACS manually:
    - Repository: `https://github.com/Hyperion5088/homeassistant-netgear-proav-switch-card`
    - Category: `Dashboard`
@@ -22,7 +22,7 @@ This repository is the HACS dashboard/plugin card. The companion integration is 
 HACS serves the card from:
 
 ```text
-/hacsfiles/netgear-proav-switch-card/netgear-proav-switch-card.js
+/hacsfiles/homeassistant-netgear-proav-switch-card/netgear-proav-switch-card.js
 ```
 
 The custom card type is:
