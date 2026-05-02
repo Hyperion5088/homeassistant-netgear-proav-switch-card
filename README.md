@@ -2,19 +2,19 @@
 
 ![NETGEAR Pro AV Switch Card logo](brand/logo.png)
 
-Local Lovelace card for the [`NETGEAR Pro AV Switch`](https://github.com/Hyperion5088/ha-netgear-proav) Home Assistant integration.
+Local Lovelace card for the [`NETGEAR Pro AV Switch`](https://github.com/Hyperion5088/homeassistant-netgear-proav) Home Assistant integration.
 
-This repository is the HACS dashboard/plugin card. The companion integration is [`ha-netgear-proav`](https://github.com/Hyperion5088/ha-netgear-proav).
+This repository is the HACS dashboard/plugin card. The companion integration is [`ha-netgear-proav`](https://github.com/Hyperion5088/homeassistant-netgear-proav).
 
-[![Add this repository to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Hyperion5088&repository=netgear-proav-switch-card&category=plugin)
+[![Add this repository to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Hyperion5088&repository=homeassistant-netgear-proav-switch-card&category=plugin)
 
 ## Installation
 
 ### HACS
 
-1. Install the companion [`ha-netgear-proav`](https://github.com/Hyperion5088/ha-netgear-proav) integration first.
+1. Install the companion [`ha-netgear-proav`](https://github.com/Hyperion5088/homeassistant-netgear-proav) integration first.
 2. Use the button above, or add this repository to HACS manually:
-   - Repository: `https://github.com/Hyperion5088/netgear-proav-switch-card`
+   - Repository: `https://github.com/Hyperion5088/homeassistant-netgear-proav-switch-card`
    - Category: `Dashboard`
 3. Install `NETGEAR Pro AV Switch Card` from HACS.
 4. Refresh the browser after HACS adds the dashboard resource.
