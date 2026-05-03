@@ -4,6 +4,8 @@
 
 Local Lovelace card for the [`NETGEAR Pro AV Switch`](https://github.com/Hyperion5088/homeassistant-netgear-proav) Home Assistant integration.
 
+Status: beta. This card is usable for testing, but layout, options, and entity assumptions may still change before a stable release.
+
 This repository is the HACS dashboard/plugin card. The companion integration is [`homeassistant-netgear-proav`](https://github.com/Hyperion5088/homeassistant-netgear-proav).
 
 [![Add this repository to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Hyperion5088&repository=homeassistant-netgear-proav-switch-card&category=plugin)
